@@ -12,9 +12,10 @@ typedef struct {
 
 void lerComandos(FILE *arquivo);
 char* alocar_din(int tamanho);
-void criarArquivo(char* m, char* n);
-void limparImagem(Pixel **cores, int m, int n, char* r, char* g, char* b);
-void renomearImagem(char* nome_novo);
+void criarArquivo(char linha[], char *m, char *n);
+void limparImagem(Pixel **cores, char linha[], char* m, char* n, char* r, char* g, char* b);
+void renomearImagem(char linha[]);
+Pixel** alocar_pixels(char* m, char* n);
 // void alocarImagem(FILE *arquivo, Pixel **img, int m, int n);
 // void lerArquivo(FILE *arquivo, Pixel **img,  int m, int n);
 

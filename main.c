@@ -4,43 +4,43 @@
 #include <string.h>
 
 int main(){
-    FILE *arquivo;
     Pixel **cores;
+    FILE *arquivo;
     int i, j;
-    char comando[20];
-    char novo_arquivo[20];
+    char linha[20];
 
-    arquivo = fopen("especificacao-presentation.txt", "r");
-
-    //Alocando dinamicamente as dimensões da imagem
+    // Alocando dinamicamente as dimensões da imagem
     char *m = alocar_din(5);
     char *n = alocar_din(5);
+
+    // Abertura do arquivo de especificação
+    arquivo = fopen("especificacao-presentation.txt", "r");
 
     //Alocando dinamicamente os representantes r, g e b 
     char *r = alocar_din(3);
     char *g = alocar_din(3);
     char *b = alocar_din(3);
-    
-    // Lendo a primeira linha
-    fscanf(arquivo, "%s %s %s\n", comando, m, n);
-    criarArquivo(m, n);
-    
-    int m2 = atoi(m);                                   // Transformado char em int
-    int n2 = atoi(n);                                   // Transformando char em int
 
-    cores = (Pixel**)malloc(m2*sizeof(Pixel*));         // Alocação dinâmica de Pixel
-
-    for(i = 0; i < m2; i++){
-        cores[i] = (Pixel*)malloc(n2*sizeof(Pixel));
+    // Pega cada linha até o fim do arquvio de especificação
+    while(fgets(linha, sizeof(linha), arquivo) != NULL) {
+        // Verifica de na linha especificada contém o comando especificado
+        if(strstr(linha, "image")){
+            // Se a linha conter o comando image, cria o arquivo
+            criarArquivo(linha, m, n);
+            // Aloca pixels dinamicamente
+            cores = alocar_pixels(m, n);
+        }
+        if(strstr(linha, "clear")){
+            // Se a linha conter o comando clear, limpa a imagem com as cores especificadas
+            limparImagem(cores, linha, m, n, r, g, b);
+        }
+        if(strstr(linha, "save")){
+            // Se a linha conter o comando save, salva o arquivo com o nome especificado
+            renomearImagem(linha);
+        }
     }
+    // Fecha arquivo de especificação
+    fclose(arquivo);
 
-    //Lendo a segunda linha
-    fscanf(arquivo, "%s %s %s %s\n", comando, r, g, b);
-    limparImagem(cores, m2, n2, r, g, b);
-    
-    //Lendo a terceira linha
-    fscanf(arquivo, "%s %s\n", comando, novo_arquivo);
-    renomearImagem(novo_arquivo);
-    
     return 0;
 }
