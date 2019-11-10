@@ -3,8 +3,6 @@
 #include "methods.h"
 #include <string.h>
 
-#include <graphics.h>
-
 char* alocar_din(int tamanho){
     char *ponteiro;
     ponteiro = (char*)malloc(tamanho*sizeof(char));
@@ -12,37 +10,62 @@ char* alocar_din(int tamanho){
     return ponteiro;
 }
 
-void criarArquivo(char* m, char* n){
-    FILE *imagem = fopen("teste2.ppm", "w");
+void criarArquivo(char linha[], char *m, char *n){
+    char comando[10];
+    // Lê a linha no padrão especificado no parâmetro do meio
+    sscanf(linha, "%s %s %s", comando, m, n);
+    // Abre a imagem baseado no que foi lido na linha
+    FILE *imagem = fopen("teste.ppm", "w");
+    // Preenche as primeiras linhas da imagem
     fprintf(imagem, "P3\n");
     fprintf(imagem, "%s %s\n", m, n);
     fprintf(imagem, "255\n");
+    // Fecha a imagem
     fclose(imagem);
 }
 
-void limparImagem(Pixel **cores, int m, int n, char* r, char* g, char* b){
+void limparImagem(Pixel **cores, char linha[], char* m, char* n, char* r, char* g, char* b){
+    // Transforma o tamanho das dimensões em inteiro
+    int m1 = atoi(m);
+    int n1 = atoi(n);
     int i, j;
-    for(i = 0; i < m; i++){
-        for(j = 0; j < n; j++){
+    char comando[10];
+    // Lê a linha no padrão especificado no parâmetro do meio
+    sscanf(linha, "%s %s %s %s", comando, r, g, b);
+    
+    // Percorre cores, preenchendo cada pixel com as cores especificadas pela linha lida
+    for(i = 0; i < m1; i++){
+        for(j = 0; j < n1; j++){
             cores[i][j].r = atoi(r);
             cores[i][j].g = atoi(g);
             cores[i][j].b = atoi(b);
         }
     }
-    FILE *imagem = fopen("teste2.ppm", "a");
-    for(i = 0; i < m; i++){
-        for(j = 0; j < n; j++){
+    // Abre a imagem baseado no que foi lido na linha
+    FILE *imagem = fopen("teste.ppm", "a");
+
+    // Preenche a imagem com os valores de cores em todos os seus pixels
+    for(i = 0; i < m1; i++){
+        for(j = 0; j < n1; j++){
             fprintf(imagem, "%u ", cores[i][j].r);
             fprintf(imagem, "%u ", cores[i][j].g);
             fprintf(imagem, "%u \n", cores[i][j].b);
         }
     }
+    // Fecha a imagem
     fclose(imagem);
 }
 
-void renomearImagem(char* nome_novo){
-    FILE *imagem = fopen("teste2.ppm", "a");
-    rename("teste2.ppm", nome_novo);
+void renomearImagem(char linha[]){
+    char comando[10];
+    char nome_novo[20];
+    // Lê a linha no padrão especificado no parâmetro do meio
+    sscanf(linha, "%s %s", comando, nome_novo);
+    // Abre a imagem
+    FILE *imagem = fopen("teste.ppm", "a");
+    // Renomeia a imagem
+    rename("teste.ppm", nome_novo);
+    // Fecha a imagem
     fclose(imagem);
 }
 
@@ -65,54 +88,15 @@ void desenharLinha(int x0, int y0, int x1, int y1){
         }
     }
 }
+// Função para alocar dinamicamente cores
+Pixel** alocar_pixels(char* m, char* n){
+    int m1 = atoi(m);
+    int n1 = atoi(n);
+    int i;
+    Pixel **cores = (Pixel**)malloc(m1 * sizeof(Pixel*));
 
-// void alocarImagem(FILE *arquivo, Pixel **img, int m, int n){
-//     int i, j;
-//     img = (Pixel**)calloc(m, sizeof(Pixel*));
-
-//     if(img == NULL){
-//         printf("Erro ao alocar!");
-//     }
-
-//     for(i = 0; i < m; i++){
-//         img[i] = (Pixel*)calloc(n, sizeof(Pixel));
-
-//         if(img[i] == NULL){
-//             printf("Erro ao alocar!");
-//         }
-//     }
-
-//     fprintf(arquivo, "P3\n");
-//     fprintf(arquivo, "%u %u \n", m, n);
-//     fprintf(arquivo, "255 \n");
-
-//     for(i = 0; i < m; i++){
-//         for(j = 0; j < n; j++){
-//             img[i][j].r = 0;
-//             img[i][j].g = 255;
-//             img[i][j].b = 0;
-//         }
-//     }
-
-//     for(i = 0; i < m; i++){
-//         for(j = 0; j < n; j++){
-//             fprintf(arquivo, "%u %u %u \n", img[i][j].r, img[i][j].g, img[i][j].b);
-//         }
-//     } 
-// }
-
-// void lerArquivo(FILE *arquivo, Pixel **img, int m, int n){
-//     int i, j;
-//     arquivo = fopen("imagem.ppm", "r");
-
-//     if (arquivo == NULL){
-//         printf("Erro na leitura do arquivo!");
-//     }
-//     else{
-//         for(i = 0; i < m; i++){
-//             for(j = 0; j < n; j++){
-//                 printf("%u %u %u \n", img[i][j].r,img[i][j].g, img[i][j].b);
-//             }
-//         }
-//     }
-// }
+    for(i = 0; i < m1; i++){
+        cores[i] = (Pixel*)malloc(n1 * sizeof(Pixel));
+    }
+    return cores;
+}
