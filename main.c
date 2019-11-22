@@ -34,11 +34,9 @@ int main(){
         }
         if(strstr(linha, "line")){
             desenharLinha(cores, linha, m, n);
-            //bresenham(cores, linha, m, n);
         }
         if(strstr(linha, "save")){
             // Se a linha conter o comando save, salva o arquivo com o nome especificado
-            //renomearImagem(linha);
             criarArquivo2(linha, cores, m, n);
         }
         if(strstr(linha, "color")){
