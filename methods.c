@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "methods.h"
 #include <string.h>
+#include <math.h>
 
 char* alocar_din(int tamanho){
     char *ponteiro;
@@ -74,35 +75,75 @@ void desenharLinha(Pixel **cores, char linha[], char* m, char* n){
     int x = x1_int;
     int y = y1_int;
 
-    // Inclinação
-    int dx = abs(x2_int-x1_int);
-    int dy = abs(y2_int-y1_int);
+    int dx = abs(x2_int-x1_int), sx = x1_int<x2_int ? 1 : -1;
+    
+    int dy = abs(y2_int-y1_int), sy = y1_int<y2_int ? 1 : -1; 
 
-    int decisao = (2*dy-dx);
-    int incI = 2*dy;
-    int incS = 2*(dy-dx);
+    int err = (dx>dy ? dx : -dy)/2, e2;
 
-    cores[y][x].r = 0;
-    cores[y][x].g = 0;
-    cores[y][x].b = 0;
+    while(x != x2_int && y != y2_int){
+        printf("P[%d][%d]\n", x, y);
+        //printf("%d\n", y);
 
-    while(x != x2_int){
-        if(decisao >= 0){
-            decisao = decisao+2*dy-2*dx;
-            //x++;
-            //y++;
+        if (x == x2_int && y == y2_int){
+            break;
         }
-        else{
-            decisao = decisao + 2*dy;
-            //y++;
+        e2 = err;
+        if (e2 >-dx) { 
+            err -= dy; x += sx;
         }
-        x++;
-    cores[y][x].r = 0;
-    cores[y][x].g = 0;
-    cores[y][x].b = 0;
+        if (e2 < dy) { 
+            err += dx; y += sy;
+        }
+
+    cores[x][y].r = 0;
+    cores[x][y].g = 0;
+    cores[x][y].b = 0;
+    }
+}
+void desenharCirculo(Pixel **cores, char linha[]){
+    char comando[10];
+    char raio[5];
+    char xc[5];
+    char yc[5];
+    int x;
+
+    sscanf(linha, "%s %s %s %s", comando, raio, xc, yc);
+    
+    int xc_int = atoi(xc);
+    int yc_int = atoi(yc);
+    int raio_int = atoi(raio);
+    
+    
+
+    for(x=0; x<(raio_int*sin(45*M_PI/180)); x++){
+        float yFloat = sqrt(raio_int*raio_int-x*x);
+
+        float yBaixo = yFloat +0.5;
+        float yCima = -yFloat +0.5;
+        float xDireita = x;
+        float xEsquerda = -x;
+
+        pintarPixel(cores, yBaixo+xc_int, xEsquerda+yc_int);
+        pintarPixel(cores, xDireita+xc_int, yCima+yc_int);
+        pintarPixel(cores, xEsquerda+xc_int, yCima+yc_int);
+        pintarPixel(cores, yCima+xc_int, xEsquerda+yc_int);
+        pintarPixel(cores, yCima+xc_int, xDireita+yc_int);
+        pintarPixel(cores, xEsquerda+xc_int, yBaixo+yc_int);
+        pintarPixel(cores, xDireita+xc_int, yBaixo+yc_int);
+        pintarPixel(cores, yBaixo+xc_int, xDireita+yc_int);
+
     }
 }
 
+void pintarPixel(Pixel **cores, int i, int j){
+    cores[i][j].r = 0;
+    cores[i][j].g = 0;
+    cores[i][j].b = 0;
+
+    // FILE *imagem = fopen("xablau", "w");
+    
+}
 
 // Função para alocar dinamicamente cores
 Pixel** alocar_pixels(char linha[], char* m, char* n){
@@ -153,7 +194,7 @@ void pintarImagem(Pixel** cores, char linha[], char* m, char* n, char* r, char* 
 void criarArquivo2(char linha[], Pixel** cores, char* m, char* n){
     char comando[10];
     char nome[20];
-    int i, j;
+    int x,y;
     int m1 = atoi(m);
     int n1 = atoi(n);
 
@@ -165,11 +206,12 @@ void criarArquivo2(char linha[], Pixel** cores, char* m, char* n){
     fprintf(imagem, "%s %s\n", m, n);
     fprintf(imagem, "255\n");
 
-    for(i = 0; i < m1; i++){
-        for(j = 0; j < n1; j++){
-            fprintf(imagem, "%u ", cores[i][j].r);
-            fprintf(imagem, "%u ", cores[i][j].g);
-            fprintf(imagem, "%u \n", cores[i][j].b); 
+    for(y = 0; y < n1; y++){
+        for(x = 0; x < m1; x++){
+            fprintf(imagem, "%u ", cores[x][y].r);
+            fprintf(imagem, "%u ", cores[x][y].g);
+            fprintf(imagem, "%u \n", cores[x][y].b); 
         }
     }
+    fclose(imagem);
 }
