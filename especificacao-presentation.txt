@@ -1,3 +1,5 @@
 image 1920 1080
-clear 0 255 0
+clear 0 0 0
+color 100 170 200
+line 300 200 301 400
 save xablau.ppm

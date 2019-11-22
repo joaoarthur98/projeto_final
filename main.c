@@ -25,18 +25,22 @@ int main(){
     while(fgets(linha, sizeof(linha), arquivo) != NULL) {
         // Verifica de na linha especificada contém o comando especificado
         if(strstr(linha, "image")){
-            // Se a linha conter o comando image, cria o arquivo
-            criarArquivo(linha, m, n);
             // Aloca pixels dinamicamente
-            cores = alocar_pixels(m, n);
+            cores = alocar_pixels(linha, m, n);
         }
         if(strstr(linha, "clear")){
             // Se a linha conter o comando clear, limpa a imagem com as cores especificadas
             limparImagem(cores, linha, m, n, r, g, b);
         }
+        if(strstr(linha, "line")){
+            desenharLinha(cores, linha, m, n);
+        }
         if(strstr(linha, "save")){
             // Se a linha conter o comando save, salva o arquivo com o nome especificado
-            renomearImagem(linha);
+            criarArquivo2(linha, cores, m, n);
+        }
+        if(strstr(linha, "color")){
+            pintarImagem(cores, linha, m, n, r, g, b);
         }
     }
     // Fecha arquivo de especificação
