@@ -42,6 +42,9 @@ int main(){
         if(strstr(linha, "color")){
             pintarImagem(cores, linha, m, n, r, g, b);
         }
+        if(strstr(linha, "circle")){
+            desenharCirculo(cores, linha);
+        }
     }
     // Fecha arquivo de especificação
     fclose(arquivo);
