@@ -45,6 +45,9 @@ int main(){
         if(strstr(linha, "circle")){
             desenharCirculo(cores, linha);
         }
+        if(strstr(linha, "polygon")){
+            desenharPoligono(cores, linha);
+        }
     }
     // Fecha arquivo de especificação
     fclose(arquivo);

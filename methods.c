@@ -82,7 +82,7 @@ void desenharLinha(Pixel **cores, char linha[], char* m, char* n){
     int err = (dx>dy ? dx : -dy)/2, e2;
 
     while(x != x2_int && y != y2_int){
-        printf("P[%d][%d]\n", x, y);
+        //printf("P[%d][%d]\n", x, y);
         //printf("%d\n", y);
 
         if (x == x2_int && y == y2_int){
@@ -108,7 +108,7 @@ void desenharCirculo(Pixel **cores, char linha[]){
     char yc[5];
     int x;
 
-    sscanf(linha, "%s %s %s %s", comando, raio, xc, yc);
+    sscanf(linha, "%s %s %s %s", comando, xc, yc, raio);
     
     int xc_int = atoi(xc);
     int yc_int = atoi(yc);
@@ -161,7 +161,7 @@ Pixel** alocar_pixels(char linha[], char* m, char* n){
 }
 
 void pintarImagem(Pixel** cores, char linha[], char* m, char* n, char* r, char* g, char* b){
-     int m1 = atoi(m);
+    int m1 = atoi(m);
     int n1 = atoi(n);
     int i, j;
     char comando[10];
@@ -176,19 +176,6 @@ void pintarImagem(Pixel** cores, char linha[], char* m, char* n, char* r, char* 
             cores[i][j].b = atoi(b);
         }
     }
-    // Abre a imagem baseado no que foi lido na linha
-    //FILE *imagem = fopen("teste.ppm", "a+");
-
-    // // Preenche a imagem com os valores de cores em todos os seus pixels
-    // for(i = 0; i < m1; i++){
-    //     for(j = 0; j < n1; j++){
-    //         fprintf(imagem, "%u ", cores[i][j].r);
-    //         fprintf(imagem, "%u ", cores[i][j].g);
-    //         fprintf(imagem, "%u \n", cores[i][j].b);
-    //     }
-    // }
-    // // Fecha a imagem
-    // fclose(imagem);
 }
 
 void criarArquivo2(char linha[], Pixel** cores, char* m, char* n){
@@ -214,4 +201,66 @@ void criarArquivo2(char linha[], Pixel** cores, char* m, char* n){
         }
     }
     fclose(imagem);
+}
+
+void desenharPoligono(Pixel **cores, char linha[]){
+    char comando[10];
+    char lados[5];
+    int lados_int;
+    sscanf(linha, "%s %s", comando, lados);
+    if((lados_int = atoi(lados)) == 3){
+        desenharTriangulo(cores, linha);
+    }
+}
+
+void desenharLinhaPoligono(Pixel **cores, int x1, int y1, int x2, int y2){
+    int x,y;
+
+    int dx = abs(x2-x1), sx = x1<x2 ? 1 : -1;
+    
+    int dy = abs(y2-y1), sy = y1<y2 ? 1 : -1; 
+
+    int err = (dx>dy ? dx : -dy)/2, e2;
+
+    while(x != x2 && y != y2){
+        printf("P[%d][%d]\n", x, y);
+        //printf("%d\n", y);
+
+        if (x == x2 && y == y2){
+            break;
+        }
+        e2 = err;
+        if (e2 >-dx) { 
+            err -= dy; x += sx;
+        }
+        if (e2 < dy) { 
+            err += dx; y += sy;
+        }
+
+    cores[x][y].r = 0;
+    cores[x][y].g = 0;
+    cores[x][y].b = 0;
+    }
+}
+
+void desenharTriangulo(Pixel **cores, char linha[]){
+    char comando[10];
+    char lados[5];
+    char x1[4];
+    char y1[4];
+    char x2[4];
+    char y2[4];
+    char x3[4];
+    char y3[4];
+
+    sscanf(linha, "%s %s %s %s %s %s %s %s", comando, lados, x1, y1, x2, y2, x3, y3);
+
+    int x1_int = atoi(x1);
+    int y1_int = atoi(x1);
+    int x2_int = atoi(x1);
+    int y2_int = atoi(x1);
+    int x3_int = atoi(x1);
+    int y3_int = atoi(x1);
+
+    desenharLinhaPoligono(cores, x1_int, y1_int, x2_int, y2_int);
 }

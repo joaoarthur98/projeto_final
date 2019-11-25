@@ -21,6 +21,9 @@ void pintarImagem(Pixel** cores, char linha[], char* m, char* n, char* r, char* 
 void criarArquivo2(char linha[], Pixel** cores, char* m, char* n);
 void pintarPixel(Pixel **cores, int i, int j);
 void desenharCirculo(Pixel **cores, char linha[]);
+void desenharPoligono(Pixel **cores, char linha[]);
+void desenharLinhaPoligono(Pixel **cores, int x1, int y1, int x2, int y2);
+void desenharTriangulo(Pixel **cores, char linha[]);
 // void alocarImagem(FILE *arquivo, Pixel **img, int m, int n);
 // void lerArquivo(FILE *arquivo, Pixel **img,  int m, int n);
 
