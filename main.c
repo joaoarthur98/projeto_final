@@ -6,8 +6,11 @@
 int main(){
     Pixel **cores;
     FILE *arquivo;
-    int i, j;
+    int i, j, raio, lados;
     char linha[20];
+    char comando[20];
+    char nome_final[20];
+    int x1, y1, x2, y2;
 
     // Alocando dinamicamente as dimensões da imagem
     char *m = alocar_din(5);
@@ -21,35 +24,45 @@ int main(){
     char *g = alocar_din(3);
     char *b = alocar_din(3);
 
-    // Pega cada linha até o fim do arquvio de especificação
-    while(fgets(linha, sizeof(linha), arquivo) != NULL) {
-        // Verifica de na linha especificada contém o comando especificado
-        if(strstr(linha, "image")){
+    while(strcmp(comando, "save") != 0){
+        fscanf(arquivo, "%s", comando);
+
+        if(strcmp(comando, "image") == 0){
+            fscanf(arquivo,"%s %s\n", m, n);
             // Aloca pixels dinamicamente
-            cores = alocar_pixels(linha, m, n);
+            cores = alocar_pixels(linha, m, n);          
         }
-        if(strstr(linha, "clear")){
-            // Se a linha conter o comando clear, limpa a imagem com as cores especificadas
-            limparImagem(cores, linha, m, n, r, g, b);
+        if(strcmp(comando, "clear") == 0){
+            fscanf(arquivo, "%s %s %s\n", r, g, b);
+            limparImagem(cores, comando, m, n, r, g, b);
         }
-        if(strstr(linha, "line")){
-            desenharLinha(cores, linha, m, n);
+        if(strcmp(comando, "save") == 0){
+            fscanf(arquivo, "%s\n", nome_final);
+            criarArquivo3(cores, nome_final, m, n);
         }
-        if(strstr(linha, "save")){
-            // Se a linha conter o comando save, salva o arquivo com o nome especificado
-            criarArquivo2(linha, cores, m, n);
+        
+        if(strcmp(comando, "color") == 0){
+            fscanf(arquivo, "%s %s %s\n", r, g, b);
+            pintarImagem(cores, m, n, r, g, b);
         }
-        if(strstr(linha, "color")){
-            pintarImagem(cores, linha, m, n, r, g, b);
+        
+        if(strcmp(comando, "line") == 0){
+            fscanf(arquivo, "%d %d %d %d\n", &x1, &y1, &x2, &y2);
+            //printf("%d %d %d %d\n", x1, y1, x2, y2);
+            desenharLinhaPoligono(cores, x1, y1, x2, y2);
         }
-        if(strstr(linha, "circle")){
-            desenharCirculo(cores, linha);
+        
+        if(strcmp(comando, "circle") == 0){
+            fscanf(arquivo, "%d %d %d\n", &x1, &y1, &raio);
+            desenharCirculo(cores, x1, y1, raio);
         }
-        if(strstr(linha, "polygon")){
-            desenharPoligono(cores, linha);
+        
+        if(strcmp(comando, "polygon") == 0){
+            fscanf(arquivo, "%d", &lados);
+            //printf("%d\n", x1);
+            desenharPoligono2(arquivo, cores, lados, x1, y1);
         }
     }
-    // Fecha arquivo de especificação
     fclose(arquivo);
 
     return 0;
