@@ -44,11 +44,11 @@ int main(){
         if(strcmp(comando, "color") == 0){
             fscanf(arquivo, "%s %s %s\n", r, g, b);
             pintarImagem(cores, m, n, r, g, b);
+            pintarBorda(cores, m, n);
         }
         
         if(strcmp(comando, "line") == 0){
             fscanf(arquivo, "%d %d %d %d\n", &x1, &y1, &x2, &y2);
-            //printf("%d %d %d %d\n", x1, y1, x2, y2);
             desenharLinhaPoligono(cores, x1, y1, x2, y2);
         }
         
@@ -59,8 +59,13 @@ int main(){
         
         if(strcmp(comando, "polygon") == 0){
             fscanf(arquivo, "%d", &lados);
-            //printf("%d\n", x1);
             desenharPoligono2(arquivo, cores, lados, x1, y1);
+        }
+
+        if(strcmp(comando, "fill") == 0){
+            fscanf(arquivo, "%d %d", &x1, &y1);
+            //printf("%d\n", x1);
+            fill(cores, x1, y1);
         }
     }
     fclose(arquivo);
