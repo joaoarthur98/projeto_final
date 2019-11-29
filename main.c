@@ -64,7 +64,6 @@ int main(){
 
         if(strcmp(comando, "fill") == 0){
             fscanf(arquivo, "%d %d", &x1, &y1);
-            //printf("%d\n", x1);
             fill(cores, x1, y1);
         }
     }

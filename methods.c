@@ -31,7 +31,6 @@ void limparImagem(Pixel **cores, char linha[], char* m, char* n, char* r, char* 
     int m1 = atoi(m);
     int n1 = atoi(n);
     int i = 0, j = 0;
-    printf("%d\n", m1);
 
     for (i = 0; i < m1; i++){
         pintarPixel(cores, j, i);
@@ -212,14 +211,12 @@ void desenharPoligono2(FILE *arquivo, Pixel **cores, int lados, int x1, int y1){
                     
             pontoAtualX = pontosEmX[i];
             pontoAtualY = pontosEmY[i];
-            // printf("Anterior: X -> %d | Y -> %d\n", pontoAnteriorX, pontoAnteriorY);
-            // printf("Atual: X -> %d | Y -> %d\n", pontoAtualX, pontoAtualY);
 
             desenharLinhaPoligono(cores, pontoAnteriorX, pontoAnteriorY, pontoAtualX, pontoAtualY);
 
             pontoAnteriorX = pontosEmX[i];
             pontoAnteriorY = pontosEmY[i];
-            //desenharLinhaPoligono(cores, pontosEmX[i-1], pontosEmY[i-1], pontosEmX[i], pontosEmY[i]);
+
         }
         if(i == lados-1){
             pontoAnteriorX = pontosEmX[i];
@@ -246,7 +243,6 @@ void fill( Pixel **cores, int xc, int yc){
         yc = y_inicial;
         xc++;
    }
-
 
     // Terceiro quadrante
     xc = x_inicial-1;
