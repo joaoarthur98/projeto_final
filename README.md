@@ -34,4 +34,31 @@ Projeto final da disciplina de Introdução às Técnicas de Programação
 
     Além disso, são criadas as variáveis sx e sy. A variável sx verifica se x1 é menor que x2, se sim, recebe 1. Do contrário, -1. Isto será útil porque temos que lidar com pontos onde o x1 é menor que o x2 e o contrário também. Caso seja menor, o x será incrementado na pintura até chegar ao x2. O mesmo ocorre com o y.
 
+Desenhar círculo:
+
+    Para a criação do círculo foi desenvolvida uma função chamada “desenharCirculo”, que recebe a matriz cores, a posição do ponto central e o raio. Através de um cálculo matemático o círculo é dividido em oito partes que, em cada repetição do laço, os pixels são preenchidos com a cor preta com o uso da função “pintarPixel” que tem como parâmetros a posição do pixel que será preenchido.
+    
+Função fill:
+    
+    A função “fill” tem o objetivo de pintar todos os pixels, entretanto, não pode sobrepor linhas, pintar dentro de círculos/polígonos ou ultrapassar o limite da imagem. A função tem como parâmetros apenas a matriz cores e a posição do ponto de partida. A partir desse ponto será iniciada a mudança de cor de cada pixel.
+    Dividimos o algoritmo em 4 partes. As partes são bastante semelhantes, mas cada uma irá pintar um quadrante diferente. É formada por duas estruturas de repetição while, que tem como condição “Enquanto o pixel não dor preto”, pois os pixels que formam as linhas, polígonos e círculos são pretos. 
+    No primeiro quadrante, o primeiro laço controla o “x” e o laço interno (segundo laço) controla a posição do “y”. Em cada x, o y é subtraído um até que seja encontrado um pixel preto, assim, toda coluna será pintada e, logo após, o x é somado um para ir à coluna da direita.
+    No segundo quadrante, em cada x, o y é subtraído um até que seja encontrado um pixel preto, assim, toda coluna será pintada e, logo após, o x é subtraído um para ir à coluna da esquerda.
+    No terceiro quadrante, em cada x, o y é somado um até que seja encontrado um pixel preto, assim, toda coluna será pintada e, logo após, o x é subtraído um para ir à coluna da esquerda.
+    No quarto quadrante, em cada x, o y é somado um até que seja encontrado um pixel preto, assim, toda coluna será pintada e, logo após, o x é somado um para ir à coluna da esquerda.    
+
+# O que não foi feito:
+
+    Decorrente da falta de compreensão de alguns requisitos do projeto, a função “color” não foi desenvolvida e usada corretamente. Pois, o objetivo dela é definir a cor que será predominante nos próximos comandos. No entanto, estávamos usando para definir a cor que será aplicada no backgound.
+    Além disso, por pintar cada coluna de forma estática, ao localizar um pixel da cor preta para a repetição. Desta forma, não é possível localizar e pintar os pixels que estão no outro lado, caso exista.
+    
+# Como compilar o projeto:
+    
+    No projeto foi acrescentada a biblioteca math, string, stdlib, stdio. Porém, para compilar é necessário apenas o comando make e o ./main e, para apagar o arquivo anterio e refazer, usa-se o make clean. Para que isso seja possível foi necessário o uso do arquivo makefile. 
+    
+    
+    
+
+    
+
     
